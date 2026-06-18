@@ -284,9 +284,36 @@
       border-radius: 40px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(4px);
-      opacity: 0.8;
+      opacity: 0.9;
       width: auto;
       max-width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px 16px;
+    }
+    #footer .version {
+      font-weight: 600;
+      color: var(--success);
+      background: rgba(93, 143, 110, 0.12);
+      padding: 2px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+    #footer .counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.04);
+      padding: 2px 14px;
+      border-radius: 30px;
+      font-weight: 500;
+    }
+    #footer .counter span {
+      font-weight: 700;
+      color: #3A5A4E;
     }
 
     @media (max-width: 600px) {
@@ -299,6 +326,7 @@
       #score { font-size: 15px; padding: 4px 14px; }
       #celebration-emoji { font-size: 80px; }
       #celebration-text { font-size: 26px; }
+      #footer { flex-direction: column; gap: 4px; }
     }
     @media (max-width: 400px) {
       .slot, .piece { width: 68px; height: 68px; }
@@ -335,7 +363,9 @@
     </div>
 
     <div id="footer">
-      🏛️ Trabalho de Extensão – Estácio de Sá • 2026
+      <span>🏛️ Trabalho de Extensão – Estácio de Sá • 2026</span>
+      <span class="version">EuTea ver 0.1</span>
+      <span class="counter">👁️ <span id="visit-count">0</span> visitas</span>
     </div>
   </div>
 
@@ -503,7 +533,7 @@
       animateBackground(performance.now());
 
       // ================================================================
-      // 2. JOGO COM FASES E CORES SORTIDAS
+      // 2. JOGO COM FASES E CORES SORTIDAS (CORRIGIDO)
       // ================================================================
 
       // Definição das fases com cores variadas e vibrantes
@@ -511,28 +541,28 @@
         {
           name: 'Formas',
           items: [
-            { id: 'circle', color: '#5D9BA8' },   // azul petróleo
-            { id: 'square', color: '#C9975E' },   // dourado
-            { id: 'triangle', color: '#8AB87A' }, // verde
-            { id: 'star', color: '#D4A86A' }      // amarelo
+            { id: 'circle', color: '#5D9BA8' },
+            { id: 'square', color: '#C9975E' },
+            { id: 'triangle', color: '#8AB87A' },
+            { id: 'star', color: '#D4A86A' }
           ]
         },
         {
           name: 'Letras',
           items: [
-            { id: 'a', color: '#E74C3C' },   // vermelho
-            { id: 'b', color: '#3498DB' },   // azul
-            { id: 'c', color: '#2ECC71' },   // verde
-            { id: 'd', color: '#F1C40F' }    // amarelo
+            { id: 'a', color: '#E74C3C' },
+            { id: 'b', color: '#3498DB' },
+            { id: 'c', color: '#2ECC71' },
+            { id: 'd', color: '#F1C40F' }
           ]
         },
         {
           name: 'Números',
           items: [
-            { id: '1', color: '#9B59B6' },   // roxo
-            { id: '2', color: '#E67E22' },   // laranja
-            { id: '3', color: '#1ABC9C' },   // turquesa
-            { id: '4', color: '#E74C3C' }    // vermelho (variado)
+            { id: '1', color: '#9B59B6' },
+            { id: '2', color: '#E67E22' },
+            { id: '3', color: '#1ABC9C' },
+            { id: '4', color: '#E74C3C' }
           ]
         }
       ];
@@ -582,6 +612,7 @@
         } catch (e) {}
       }
 
+      // ===== FUNÇÃO CORRIGIDA: agora aplica fill E color =====
       function makeShapeSVG(shapeId, color, extraAttrs) {
         const ns = 'http://www.w3.org/2000/svg';
         const svg = document.createElementNS(ns, 'svg');
@@ -593,6 +624,7 @@
         use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#shape-' + shapeId);
         use.setAttribute('href', '#shape-' + shapeId);
         use.style.fill = color;
+        use.style.color = color;   // <-- CORREÇÃO: para textos com currentColor
         svg.appendChild(use);
         return svg;
       }
@@ -811,6 +843,30 @@
         messageElement.textContent = 'Vamos começar!';
       }
 
+      // ================================================================
+      // 3. CONTADOR DE ACESSOS (usando countapi.xyz)
+      // ================================================================
+      const counterEl = document.getElementById('visit-count');
+
+      async function updateCounter() {
+        try {
+          const response = await fetch('https://api.countapi.xyz/hit/jogo-formas-estacio/visitas');
+          const data = await response.json();
+          if (data && typeof data.value === 'number') {
+            counterEl.textContent = data.value;
+          }
+        } catch (e) {
+          // Se a API falhar, mantém o valor 0
+          console.warn('Contador indisponível');
+        }
+      }
+
+      // Atualiza o contador ao carregar a página
+      updateCounter();
+
+      // ================================================================
+      // 4. EVENTOS E INICIALIZAÇÃO
+      // ================================================================
       soundBtn.addEventListener('click', () => {
         soundOn = !soundOn;
         soundBtn.textContent = soundOn ? '🔊' : '🔇';
