@@ -844,25 +844,35 @@
       }
 
       // ================================================================
-      // 3. CONTADOR DE ACESSOS (usando countapi.xyz)
+      // 3. CONTADOR DE ACESSOS (usando CountAPI - mileshilliard.com)
       // ================================================================
       const counterEl = document.getElementById('visit-count');
 
       async function updateCounter() {
         try {
-          const response = await fetch('https://api.countapi.xyz/hit/jogo-formas-estacio/visitas');
+          // Usando o novo CountAPI (sucessor do countapi.xyz)
+          const response = await fetch('https://countapi.mileshilliard.com/api/v1/hit/eutea-jogo-visitas');
           const data = await response.json();
           if (data && typeof data.value === 'number') {
             counterEl.textContent = data.value;
+            // Salva no localStorage como fallback
+            localStorage.setItem('visita_contador', data.value);
           }
         } catch (e) {
-          // Se a API falhar, mantém o valor 0
-          console.warn('Contador indisponível');
+          // Fallback: mostra o último valor salvo
+          const localCount = localStorage.getItem('visita_contador');
+          if (localCount) {
+            counterEl.textContent = localCount;
+          } else {
+            counterEl.textContent = '0';
+          }
+          console.warn('Contador indisponível - usando cache local');
         }
       }
 
-      // Atualiza o contador ao carregar a página
+      // Atualiza o contador ao carregar a página e a cada 30 segundos
       updateCounter();
+      setInterval(updateCounter, 30000);
 
       // ================================================================
       // 4. EVENTOS E INICIALIZAÇÃO
