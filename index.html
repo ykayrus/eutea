@@ -341,17 +341,30 @@
 
   <div id="celebration">
     <div id="celebration-emoji">🎉</div>
-    <div id="celebration-text">Parabéns, você completou todas!</div>
+    <div id="celebration-text">Parabéns, você completou todas as fases!</div>
     <button id="restart-btn">Jogar de novo</button>
   </div>
 
   <svg width="0" height="0" style="position:absolute">
     <defs>
+      <!-- Formas geométricas -->
       <symbol id="shape-circle" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" /></symbol>
       <symbol id="shape-square" viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" rx="6" /></symbol>
       <symbol id="shape-triangle" viewBox="0 0 100 100"><polygon points="50,8 92,88 8,88" /></symbol>
       <symbol id="shape-star" viewBox="0 0 100 100"><polygon points="50,5 61,38 96,38 67,59 78,92 50,71 22,92 33,59 4,38 39,38" /></symbol>
       <symbol id="shape-hex" viewBox="0 0 100 100"><polygon points="50,4 91,27 91,73 50,96 9,73 9,27" /></symbol>
+
+      <!-- Letras -->
+      <symbol id="shape-a" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">A</text></symbol>
+      <symbol id="shape-b" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">B</text></symbol>
+      <symbol id="shape-c" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">C</text></symbol>
+      <symbol id="shape-d" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">D</text></symbol>
+
+      <!-- Números -->
+      <symbol id="shape-1" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">1</text></symbol>
+      <symbol id="shape-2" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">2</text></symbol>
+      <symbol id="shape-3" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">3</text></symbol>
+      <symbol id="shape-4" viewBox="0 0 100 100"><text x="50" y="68" font-size="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="currentColor">4</text></symbol>
     </defs>
   </svg>
 
@@ -360,7 +373,7 @@
       'use strict';
 
       // ================================================================
-      // 1. BACKGROUND – CORES FORTES E VIVAS (TONS MAIS ESCUROS)
+      // 1. BACKGROUND – CORES FORTES E VIVAS
       // ================================================================
       const canvas = document.getElementById('bg-canvas');
       const ctx = canvas.getContext('2d');
@@ -375,10 +388,9 @@
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
 
-      // Partículas com cores fortes (alta saturação, luminosidade média)
       function initParticles() {
         particles = [];
-        const hueOptions = [210, 150, 270, 10, 120]; // azul, verde, roxo, coral, esmeralda
+        const hueOptions = [210, 150, 270, 10, 120];
         for (let i = 0; i < NUM_PARTICLES; i++) {
           const hue = hueOptions[Math.floor(Math.random() * hueOptions.length)] + (Math.random() - 0.5) * 20;
           particles.push({
@@ -394,7 +406,6 @@
       initParticles();
 
       function drawWaves(time) {
-        // Fundo neutro escuro para dar contraste às cores fortes
         const grad = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, Math.max(W,H)*0.8);
         grad.addColorStop(0, '#f5efe8');
         grad.addColorStop(0.5, '#ebe3d9');
@@ -402,13 +413,12 @@
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, W, H);
 
-        // Camadas com SATURAÇÃO MÁXIMA (85-90%) e luminosidade média (40-55%) => cores FORTES e profundas
         const waveLayers = [
-          { baseY: 0.15, amp: 55, freq: 0.005, speed: 0.0006, hue: 210, sat: 90, light: 45, alpha: 0.45 }, // Azul royal
-          { baseY: 0.35, amp: 60, freq: 0.007, speed: 0.0008, hue: 150, sat: 85, light: 40, alpha: 0.40 }, // Verde bandeira
-          { baseY: 0.55, amp: 50, freq: 0.004, speed: 0.0010, hue: 270, sat: 85, light: 50, alpha: 0.38 }, // Roxo intenso
-          { baseY: 0.75, amp: 60, freq: 0.006, speed: 0.0005, hue: 10, sat: 90, light: 48, alpha: 0.42 }, // Coral vibrante
-          { baseY: 0.92, amp: 42, freq: 0.008, speed: 0.0009, hue: 140, sat: 80, light: 42, alpha: 0.40 }  // Esmeralda
+          { baseY: 0.15, amp: 55, freq: 0.005, speed: 0.0006, hue: 210, sat: 90, light: 45, alpha: 0.45 },
+          { baseY: 0.35, amp: 60, freq: 0.007, speed: 0.0008, hue: 150, sat: 85, light: 40, alpha: 0.40 },
+          { baseY: 0.55, amp: 50, freq: 0.004, speed: 0.0010, hue: 270, sat: 85, light: 50, alpha: 0.38 },
+          { baseY: 0.75, amp: 60, freq: 0.006, speed: 0.0005, hue: 10, sat: 90, light: 48, alpha: 0.42 },
+          { baseY: 0.92, amp: 42, freq: 0.008, speed: 0.0009, hue: 140, sat: 80, light: 42, alpha: 0.40 }
         ];
 
         for (const layer of waveLayers) {
@@ -433,7 +443,6 @@
           ctx.fill();
         }
 
-        // Brilhos extras (linhas de luz) com cores fortes e mais opacas
         ctx.save();
         ctx.globalCompositeOperation = 'screen';
         for (let i = 0; i < 4; i++) {
@@ -453,7 +462,6 @@
         }
         ctx.restore();
 
-        // Partículas com cores fortes e brilho
         for (const p of particles) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
@@ -495,20 +503,44 @@
       animateBackground(performance.now());
 
       // ================================================================
-      // 2. JOGO PRINCIPAL (sem alterações, apenas mantido)
+      // 2. JOGO COM FASES E CORES SORTIDAS
       // ================================================================
-      const SHAPES_DATA = [
-        { id: 'circle',   color: '#5D9BA8' },
-        { id: 'square',   color: '#C9975E' },
-        { id: 'triangle', color: '#8AB87A' },
-        { id: 'star',     color: '#D4A86A' },
-        { id: 'hex',      color: '#A98ABF' }
+
+      // Definição das fases com cores variadas e vibrantes
+      const PHASES = [
+        {
+          name: 'Formas',
+          items: [
+            { id: 'circle', color: '#5D9BA8' },   // azul petróleo
+            { id: 'square', color: '#C9975E' },   // dourado
+            { id: 'triangle', color: '#8AB87A' }, // verde
+            { id: 'star', color: '#D4A86A' }      // amarelo
+          ]
+        },
+        {
+          name: 'Letras',
+          items: [
+            { id: 'a', color: '#E74C3C' },   // vermelho
+            { id: 'b', color: '#3498DB' },   // azul
+            { id: 'c', color: '#2ECC71' },   // verde
+            { id: 'd', color: '#F1C40F' }    // amarelo
+          ]
+        },
+        {
+          name: 'Números',
+          items: [
+            { id: '1', color: '#9B59B6' },   // roxo
+            { id: '2', color: '#E67E22' },   // laranja
+            { id: '3', color: '#1ABC9C' },   // turquesa
+            { id: '4', color: '#E74C3C' }    // vermelho (variado)
+          ]
+        }
       ];
 
-      const PIECES_PER_ROUND = 4;
-      let soundOn = false;
+      let currentPhase = 0;
       let placedCount = 0;
       let activeShapes = [];
+      let soundOn = false;
       let scoreElement = document.getElementById('score');
       let messageElement = document.getElementById('message');
       let slotsEl = document.getElementById('slots');
@@ -566,7 +598,8 @@
       }
 
       function updateScore() {
-        scoreElement.textContent = `✅ ${placedCount} / ${activeShapes.length}`;
+        const total = activeShapes.length;
+        scoreElement.textContent = `Fase ${currentPhase+1}: ${placedCount} / ${total}`;
       }
 
       function showRandomMessage() {
@@ -575,15 +608,13 @@
         messageElement.style.opacity = '1';
       }
 
-      function buildRound() {
+      function buildRound(items) {
         placedCount = 0;
         slotsEl.innerHTML = '';
         trayEl.innerHTML = '';
-        messageElement.textContent = 'Arraste a forma para o lugar certo';
+        messageElement.textContent = `Fase ${currentPhase+1}: ${PHASES[currentPhase].name}`;
         messageElement.style.opacity = '0.85';
-        updateScore();
-
-        activeShapes = shuffle(SHAPES_DATA).slice(0, PIECES_PER_ROUND);
+        activeShapes = shuffle(items);
         const slotOrder = shuffle(activeShapes);
         const pieceOrder = shuffle(activeShapes);
 
@@ -614,6 +645,8 @@
           trayEl.appendChild(piece);
           attachDrag(piece);
         });
+
+        updateScore();
       }
 
       function attachDrag(piece) {
@@ -682,8 +715,16 @@
             placedCount++;
             updateScore();
             showRandomMessage();
+
             if (placedCount >= activeShapes.length) {
-              setTimeout(showCelebration, 500);
+              if (currentPhase < PHASES.length - 1) {
+                currentPhase++;
+                setTimeout(() => {
+                  buildRound(PHASES[currentPhase].items);
+                }, 600);
+              } else {
+                setTimeout(showCelebration, 500);
+              }
             }
           } else {
             if (target) {
@@ -762,24 +803,23 @@
         }
       }
 
+      function resetGame() {
+        celebrationEl.classList.remove('show');
+        celebrationEl.querySelectorAll('.confetti-piece').forEach(c => c.remove());
+        currentPhase = 0;
+        buildRound(PHASES[currentPhase].items);
+        messageElement.textContent = 'Vamos começar!';
+      }
+
       soundBtn.addEventListener('click', () => {
         soundOn = !soundOn;
         soundBtn.textContent = soundOn ? '🔊' : '🔇';
       });
 
-      resetBtn.addEventListener('click', () => {
-        celebrationEl.classList.remove('show');
-        celebrationEl.querySelectorAll('.confetti-piece').forEach(c => c.remove());
-        buildRound();
-      });
+      resetBtn.addEventListener('click', resetGame);
+      restartBtn.addEventListener('click', resetGame);
 
-      restartBtn.addEventListener('click', () => {
-        celebrationEl.classList.remove('show');
-        celebrationEl.querySelectorAll('.confetti-piece').forEach(c => c.remove());
-        buildRound();
-      });
-
-      buildRound();
+      resetGame();
 
     })();
   </script>
