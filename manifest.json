@@ -1,6 +1,6 @@
 {
-  "name": "Jogo das Formas - Estácio",
-  "short_name": "Jogo das Formas",
+  "name": "EuTea site",
+  "short_name": "EuTea",
   "description": "Jogo educativo de encaixar formas geométricas para crianças com TEA",
   "start_url": "./index.html",
   "display": "standalone",
